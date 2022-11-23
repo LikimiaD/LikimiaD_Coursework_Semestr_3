@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using SQlite;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace app
 {
@@ -51,6 +52,7 @@ namespace app
         }
         private void ClearText()
         {
+            group_department.SelectedIndex = group_name.SelectedIndex = group_num.SelectedIndex = -1;
             student_name.Clear();
             student_surname.Clear();
             student_middle.Clear();

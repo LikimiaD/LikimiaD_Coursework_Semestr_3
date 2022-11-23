@@ -2,6 +2,7 @@
 using System.Data;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text;
+using System.Xml.Linq;
 
 namespace SQlite
 {
@@ -41,7 +42,7 @@ namespace SQlite
             }
             if (error_line.Length > 0)
                 MessageBox.Show($"Couldn't add in {filename}: {error_line}");
-            return good_line;
+            return good_line.Length > 1 ? good_line.Remove(good_line.Length - 1) : good_line;
         }
         public string LoadFile(string filename)
         {
@@ -61,10 +62,10 @@ namespace SQlite
             CreateTable(sqlite_conn);
             DisplayTable(sqlite_conn, "0");
         }
-        public void Refresh(string form)
+        public void Refresh(string form, string name = "")
         {
             sqlite_conn = CreateConnection();
-            DisplayTable(sqlite_conn, form);
+            DisplayTable(sqlite_conn, form, name);
         }
         public void Create(string[] items)
         {
@@ -75,6 +76,59 @@ namespace SQlite
         {
             sqlite_conn = CreateConnection();
             DeleteStudent(sqlite_conn, id);
+        }
+        public void Update(string[] items, string id)
+        {
+            sqlite_conn = CreateConnection();
+            UpdatePerson(sqlite_conn, items, id);
+        }
+        public string[] ShowInfo(string id)
+        {
+            string[] array = new string[8];
+            string sqlExpression = $"SELECT * FROM Students WHERE ID == '{id}'";
+            using (SQLiteConnection connection = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Compress = True; "))
+            {
+                connection.Open();
+                SQLiteCommand command = new SQLiteCommand(sqlExpression, connection);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            for (int i = 0; i <= 7; i++)
+                                array[i] = reader.GetValue(i).ToString();
+                        }
+                    }
+                }
+            }
+            return array;
+        }
+        public List<string> Surnames(int id)
+        {
+            var value = id == 0 ? "Surname" : "Group_Name";
+            var list_ = new List<string>();
+            string[] array = new string[8];
+            string sqlExpression = $"SELECT {value} FROM Students";
+            using (SQLiteConnection connection = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Compress = True; "))
+            {
+                connection.Open();
+                SQLiteCommand command = new SQLiteCommand(sqlExpression, connection);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                list_.Add(reader.GetValue(i).ToString());
+                            }
+                        }
+                    }
+                }
+            }
+            return list_;
         }
         static SQLiteConnection CreateConnection()
         {
@@ -94,24 +148,27 @@ namespace SQlite
         private void CreateTable(SQLiteConnection conn)
         {
             SQLiteCommand sqlite_cmd;
-            string Createsql = "create table if not exists Students('Name' VARCHAR(100)," +
-                                                                    "'Last Name' VARCHAR(100)," +
-                                                                    "'Middle Name' VARCHAR(100) UNIQUE," +
-                                                                    "'Date of Birth' VARCHAR(100)," +
-                                                                    "'Group Name' VARCHAR(100)," +
-                                                                    "'Group Num' INT," +
-                                                                    "'Group Department' VARCHAR(100))";
+            string Createsql = "create table if not exists Students(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                                    "'Name' VARCHAR(100)," +
+                                                                    "'Surname' VARCHAR(100)," +
+                                                                    "'Middle_Name' VARCHAR(100) UNIQUE," +
+                                                                    "'Date_of_Birth' VARCHAR(100)," +
+                                                                    "'Group_Name' VARCHAR(100)," +
+                                                                    "'Group_Num' INT," +
+                                                                    "'Group_Department' VARCHAR(100))";
             sqlite_cmd = conn.CreateCommand();
             sqlite_cmd.CommandText = Createsql;
             sqlite_cmd.ExecuteNonQuery();
         }
-        private void DisplayTable(SQLiteConnection conn, string form)
+        private void DisplayTable(SQLiteConnection conn, string form, string name = "")
         {
             string sql = "";
             if (form == "0")
                 sql = ("SELECT * FROM Students");
             if (form == "1")
-                sql = ("SELECT * FROM Students");
+                sql = ($"SELECT * FROM Students WHERE Group_Name = '{name}'");
+            if (form == "2")
+                sql = ($"SELECT * FROM Students WHERE Surname = '{name}'");
             da = new SQLiteDataAdapter(sql, conn);
             ds.Reset(); da.Fill(ds);
             dt = ds.Tables[0];
@@ -122,8 +179,8 @@ namespace SQlite
             try
             {
                 SQLiteCommand sqlite_cmd;
-                string sql = "INSERT INTO Students (Name, 'Last Name', 'Middle Name', 'Date of Birth'," +
-                    "'Group Name', 'Group Num', 'Group Department') " +
+                string sql = "INSERT INTO Students (Name, 'Surname', 'Middle_Name', 'Date_of_Birth'," +
+                    "'Group_Name', 'Group_Num', 'Group_Department') " +
                     $"VALUES ('{items[0]}','{items[1]}','{items[2]}','{items[3]}'," +
                     $"'{items[4]}','{items[5]}','{items[6]}')";
                 sqlite_cmd = conn.CreateCommand();
@@ -135,10 +192,28 @@ namespace SQlite
                 MessageBox.Show(ex.ToString());
             }
         }
-        private void DeleteStudent(SQLiteConnection conn, string name)
+        private void UpdatePerson(SQLiteConnection conn, string[] items, string id)
+        {
+            try
+            {
+                SQLiteCommand sqlite_cmd;
+                string sql = $"UPDATE Students SET Name = '{items[0]}', 'Surname' = '{items[1]}', " +
+                    $"'Middle_Name' = '{items[2]}', 'Date_of_Birth' = '{items[3]}'," +
+                    $"'Group_Name' = '{items[4]}', 'Group_Num' = '{items[5]}', 'Group_Department' = '{items[6]}' " +
+                    $"WHERE ID = '{id}'";
+                sqlite_cmd = conn.CreateCommand();
+                sqlite_cmd.CommandText = sql;
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+        private void DeleteStudent(SQLiteConnection conn, string id)
         {
             SQLiteCommand sqlite_cmd;
-            string sql = $"DELETE FROM Students WHERE Name ='{name}'";
+            string sql = $"DELETE FROM Students WHERE ID == '{id}'";
             sqlite_cmd = conn.CreateCommand();
             sqlite_cmd.CommandText = sql;
             sqlite_cmd.ExecuteNonQuery();
