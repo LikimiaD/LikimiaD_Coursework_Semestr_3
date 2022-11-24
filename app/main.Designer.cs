@@ -38,6 +38,10 @@
             this.combobox_main = new System.Windows.Forms.ComboBox();
             this.apply_filter = new System.Windows.Forms.Button();
             this.edit_person = new System.Windows.Forms.Button();
+            this.delete_group = new System.Windows.Forms.CheckBox();
+            this.combobox_delete = new System.Windows.Forms.ComboBox();
+            this.delete_group_button = new System.Windows.Forms.Button();
+            this.load_data = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.datagrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,7 +61,7 @@
             this.datagrid.Location = new System.Drawing.Point(0, 0);
             this.datagrid.Name = "datagrid";
             this.datagrid.RowTemplate.Height = 25;
-            this.datagrid.Size = new System.Drawing.Size(876, 438);
+            this.datagrid.Size = new System.Drawing.Size(876, 471);
             this.datagrid.TabIndex = 1;
             // 
             // group_info
@@ -72,7 +76,7 @@
             // 
             // delete_button
             // 
-            this.delete_button.Location = new System.Drawing.Point(886, 392);
+            this.delete_button.Location = new System.Drawing.Point(886, 432);
             this.delete_button.Name = "delete_button";
             this.delete_button.Size = new System.Drawing.Size(95, 39);
             this.delete_button.TabIndex = 3;
@@ -131,7 +135,7 @@
             // 
             // edit_person
             // 
-            this.edit_person.Location = new System.Drawing.Point(886, 347);
+            this.edit_person.Location = new System.Drawing.Point(886, 387);
             this.edit_person.Name = "edit_person";
             this.edit_person.Size = new System.Drawing.Size(95, 39);
             this.edit_person.TabIndex = 9;
@@ -139,11 +143,54 @@
             this.edit_person.UseVisualStyleBackColor = true;
             this.edit_person.Click += new System.EventHandler(this.edit_person_Click);
             // 
+            // delete_group
+            // 
+            this.delete_group.AutoSize = true;
+            this.delete_group.Location = new System.Drawing.Point(886, 239);
+            this.delete_group.Name = "delete_group";
+            this.delete_group.Size = new System.Drawing.Size(95, 19);
+            this.delete_group.TabIndex = 10;
+            this.delete_group.Text = "Delete Group";
+            this.delete_group.UseVisualStyleBackColor = true;
+            this.delete_group.CheckedChanged += new System.EventHandler(this.delete_group_CheckedChanged);
+            // 
+            // combobox_delete
+            // 
+            this.combobox_delete.FormattingEnabled = true;
+            this.combobox_delete.Location = new System.Drawing.Point(886, 264);
+            this.combobox_delete.Name = "combobox_delete";
+            this.combobox_delete.Size = new System.Drawing.Size(99, 23);
+            this.combobox_delete.TabIndex = 11;
+            // 
+            // delete_group_button
+            // 
+            this.delete_group_button.Location = new System.Drawing.Point(886, 293);
+            this.delete_group_button.Name = "delete_group_button";
+            this.delete_group_button.Size = new System.Drawing.Size(88, 23);
+            this.delete_group_button.TabIndex = 12;
+            this.delete_group_button.Text = "Delete Group";
+            this.delete_group_button.UseVisualStyleBackColor = true;
+            this.delete_group_button.Click += new System.EventHandler(this.delete_group_button_Click);
+            // 
+            // load_data
+            // 
+            this.load_data.Location = new System.Drawing.Point(886, 342);
+            this.load_data.Name = "load_data";
+            this.load_data.Size = new System.Drawing.Size(95, 39);
+            this.load_data.TabIndex = 13;
+            this.load_data.Text = "Load Dataset";
+            this.load_data.UseVisualStyleBackColor = true;
+            this.load_data.Click += new System.EventHandler(this.load_data_Click);
+            // 
             // main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(993, 443);
+            this.ClientSize = new System.Drawing.Size(993, 483);
+            this.Controls.Add(this.load_data);
+            this.Controls.Add(this.delete_group_button);
+            this.Controls.Add(this.combobox_delete);
+            this.Controls.Add(this.delete_group);
             this.Controls.Add(this.edit_person);
             this.Controls.Add(this.apply_filter);
             this.Controls.Add(this.combobox_main);
@@ -174,5 +221,9 @@
         private ComboBox combobox_main;
         private Button apply_filter;
         private Button edit_person;
+        private CheckBox delete_group;
+        private ComboBox combobox_delete;
+        private Button delete_group_button;
+        private Button load_data;
     }
 }

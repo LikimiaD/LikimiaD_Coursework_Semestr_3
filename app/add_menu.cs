@@ -26,7 +26,7 @@ namespace app
             group_name.Items.Clear();
             group_num.Items.Clear();
             group_department.Items.Clear();
-            group_num.Items.AddRange(Enumerable.Range(0, 11).Cast<object>().ToArray());
+            group_num.Items.AddRange(Enumerable.Range(1, 11).Cast<object>().ToArray());
             foreach (var item in addons.LoadFile("groups.txt").Split(' '))
                 group_name.Items.Add(item);
             foreach (var item in addons.LoadFile("departments.txt").Split(' '))

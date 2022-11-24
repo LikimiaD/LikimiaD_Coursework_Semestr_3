@@ -12,18 +12,28 @@ namespace app
         private SQlite.DataBase db = new DataBase();
         private SQlite.Extensions ext = new Extensions();
         private int filter_status = 0;
+        private int status = 0;
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
         public main()
         {
-            ext.RenamePath(System.AppDomain.CurrentDomain.BaseDirectory);
-            ext.CreateFile("groups.txt");
-            ext.CreateFile("departments.txt");
+            Load();
             InitializeComponent();
             SQlite.DataBase.dgv = datagrid;
             datagrid.ReadOnly = true;
             db.Start();
             combobox_main.Visible = false;
             apply_filter.Visible = false;
+            combobox_delete.Visible = false;
+            delete_group_button.Visible = false;
+        }
+        private void Load()
+        {
+            ext.RenamePath(AppDomain.CurrentDomain.BaseDirectory);
+            ext.CreateFile("groups.txt");
+            ext.CreateFile("departments.txt");
         }
 
         private void add_person_Click(object sender, EventArgs e)
@@ -60,11 +70,12 @@ namespace app
                 apply_filter.Visible = true;
                 surname_filter.Enabled = false;
                 filter_status = 1;
-                foreach (var item in db.Surnames(-1))
+                foreach (var item in db.GetInfo(-1).Distinct().ToList())
                     combobox_main.Items.Add(item);
             }
             else
             {
+                combobox_main.SelectedIndex = -1;
                 combobox_main.Items.Clear();
                 combobox_main.Visible = false;
                 apply_filter.Visible = false;
@@ -82,11 +93,12 @@ namespace app
                 apply_filter.Visible = true;
                 group_filter.Enabled = false;
                 filter_status = 2;
-                foreach (var item in db.Surnames(0))
+                foreach (var item in db.GetInfo(0).Distinct().ToList())
                     combobox_main.Items.Add(item);
             }
             else
             {
+                combobox_main.SelectedIndex = -1;
                 combobox_main.Items.Clear();
                 combobox_main.Visible = false;
                 apply_filter.Visible = false;
@@ -113,6 +125,79 @@ namespace app
             int rowindex = datagrid.CurrentCell.RowIndex;
             FormEdit.ShowInfo(datagrid.Rows[rowindex].Cells[0].Value.ToString());
             FormEdit.ShowDialog();
+        }
+
+        private void delete_group_button_Click(object sender, EventArgs e)
+        {
+            var checker = db.GetInfo(-1);
+            if (checker.Contains(combobox_delete.GetItemText(combobox_delete.SelectedItem)))
+            {
+                MessageBox.Show("I cann't do this because this information is contained in the DataBase");
+            }
+            else
+            {
+                ext.DeleteGroup(combobox_delete.GetItemText(combobox_delete.SelectedItem));
+                ClearItems();
+                Console.WriteLine(status);
+            }
+        }
+        private void ClearItems()
+        {
+            combobox_delete.SelectedIndex = -1;
+            delete_group.Checked = false;
+            combobox_delete.Visible = false;
+            delete_group_button.Visible = false;
+            combobox_delete.Items.Clear();
+        }
+
+        private void delete_group_CheckedChanged(object sender, EventArgs e)
+        {
+            if (delete_group.Checked)
+            {
+                combobox_delete.Visible = true;
+                delete_group_button.Visible = true;
+                foreach (var item in ext.LoadFile("groups.txt").Split(' '))
+                    combobox_delete.Items.Add(item);
+            }
+            else
+            {
+                combobox_delete.Items.Clear();
+                combobox_delete.Visible = false;
+                delete_group_button.Visible = false;
+                db.Refresh("0");
+            }
+        }
+
+        private void load_data_Click(object sender, EventArgs e)
+        {
+            ext.AddTextToFile("groups.txt", "БИВТ-18 БИВТ-19 БИВТ-20 БИВТ-21 ББИ-19 ББИ-20 ББИ-21 БПИ-19 БПИ-20 БПИ-21 МПИ-19 МПИ-20 МПИ-21 МБИ-19 МБИ-20 МБИ-21");
+            ext.AddTextToFile("departments.txt", "ИТКН ЭУПП ИМНИН ЭКОТЕХ ГИ ИБО ИНОБР ИКВО");
+
+            string[] values = { "Абрамов Владислав Николаевич 2000 БИВТ-18 1 ИТКН",
+                                "Анисимова Анна Александровна 2000 БИВТ-19 2 ИТКН",
+                                "Басова Мария Ивановна 2001 БИВТ-19 3 ИТКН",
+                                "Бахарев Максим Михайлович 2000 БИВТ-20 3 ИТКН",
+                                
+                                "Абрамов Антон Николаевич 2000 ББИ-18 1 ЭУПП",
+                                "Анисимова Дарья Александровна 2000 ББИ-19 2 ЭУПП",
+                                "Басова Екатерина Ивановна 2001 ББИ-19 3 ЭУПП",
+                                "Бахарев Данила Михайлович 2000 ББИ-20 3 ЭУПП",
+
+                               "Абрамов Игорь Николаевич 2000 БИВТ-18 1 ИТКН",
+                                "Анисимова Милана Александровна 2000 БИВТ-19 2 ИТКН",
+                                "Басова Дарья Ивановна 2001 БИВТ-19 3 ИТКН",
+                                "Бахарев Глеб Михайлович 2000 БИВТ-20 3 ИТКН",
+
+                               "Абрамов Данила Николаевич 2000 БПИ-18 1 ЭКОТЕХ",
+                                "Анисимова Милана Александровна 2000 БПИ-19 2 ЭКОТЕХ",
+                                "Басова София Ивановна 2001 БПИ-19 3 ЭКОТЕХ",
+                                "Бахарев Артем Михайлович 2000 БПИ-20 3 ЭКОТЕХ"};
+
+            foreach (var item in values)
+            {
+                db.Create(item.Split(' '));
+            }
+            db.Refresh("0");
         }
     }
 }

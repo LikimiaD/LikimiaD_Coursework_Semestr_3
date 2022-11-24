@@ -3,6 +3,7 @@ using System.Data;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 namespace SQlite
 {
@@ -22,6 +23,7 @@ namespace SQlite
                     await fstream.WriteAsync(buffer, 0, buffer.Length);
                 }
         }
+
         public void AddTextToFile(string filename, string text)
         {
             var legitcheck = CheckRepeat(filename, text);
@@ -43,6 +45,15 @@ namespace SQlite
             if (error_line.Length > 0)
                 MessageBox.Show($"Couldn't add in {filename}: {error_line}");
             return good_line.Length > 1 ? good_line.Remove(good_line.Length - 1) : good_line;
+        }
+        public void DeleteGroup(string name)
+        {
+            string testFile = File.ReadAllText("groups.txt");
+            if (testFile.IndexOf(name[0]) != -1 || testFile.IndexOf(name[0]) != 0)
+                testFile = testFile.Replace(" " + name, "");
+            else
+                testFile = testFile.Replace(name + " ", "");
+            File.WriteAllText("groups.txt", testFile);
         }
         public string LoadFile(string filename)
         {
@@ -104,7 +115,7 @@ namespace SQlite
             }
             return array;
         }
-        public List<string> Surnames(int id)
+        public List<string> GetInfo(int id)
         {
             var value = id == 0 ? "Surname" : "Group_Name";
             var list_ = new List<string>();
@@ -151,7 +162,7 @@ namespace SQlite
             string Createsql = "create table if not exists Students(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                                     "'Name' VARCHAR(100)," +
                                                                     "'Surname' VARCHAR(100)," +
-                                                                    "'Middle_Name' VARCHAR(100) UNIQUE," +
+                                                                    "'Middle_Name' VARCHAR(100)," +
                                                                     "'Date_of_Birth' VARCHAR(100)," +
                                                                     "'Group_Name' VARCHAR(100)," +
                                                                     "'Group_Num' INT," +
