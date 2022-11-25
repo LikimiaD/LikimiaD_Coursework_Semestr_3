@@ -163,7 +163,7 @@ namespace SQlite
                                                                     "'Name' VARCHAR(100)," +
                                                                     "'Surname' VARCHAR(100)," +
                                                                     "'Middle_Name' VARCHAR(100)," +
-                                                                    "'Date_of_Birth' VARCHAR(100)," +
+                                                                    "'Marks' VARCHAR(100)," +
                                                                     "'Group_Name' VARCHAR(100)," +
                                                                     "'Group_Num' INT," +
                                                                     "'Group_Department' VARCHAR(100))";
