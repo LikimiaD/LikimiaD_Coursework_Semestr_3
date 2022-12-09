@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app", "app\app.csproj", "{73629191-906D-48D0-83F7-4F28CF9E04CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diagram", "Diagram\Diagram.csproj", "{212941C5-4F60-49EC-89BB-D5C49FDA6376}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{73629191-906D-48D0-83F7-4F28CF9E04CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73629191-906D-48D0-83F7-4F28CF9E04CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73629191-906D-48D0-83F7-4F28CF9E04CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{212941C5-4F60-49EC-89BB-D5C49FDA6376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{212941C5-4F60-49EC-89BB-D5C49FDA6376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{212941C5-4F60-49EC-89BB-D5C49FDA6376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{212941C5-4F60-49EC-89BB-D5C49FDA6376}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

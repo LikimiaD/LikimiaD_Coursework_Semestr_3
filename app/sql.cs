@@ -119,7 +119,30 @@ namespace SQlite
         {
             var value = id == 0 ? "Surname" : "Group_Name";
             var list_ = new List<string>();
-            string[] array = new string[8];
+            string sqlExpression = $"SELECT {value} FROM Students";
+            using (SQLiteConnection connection = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Compress = True; "))
+            {
+                connection.Open();
+                SQLiteCommand command = new SQLiteCommand(sqlExpression, connection);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                list_.Add(reader.GetValue(i).ToString());
+                            }
+                        }
+                    }
+                }
+            }
+            return list_;
+        }
+        public List<string> LoadInfo(string value)
+        {
+            var list_ = new List<string>();
             string sqlExpression = $"SELECT {value} FROM Students";
             using (SQLiteConnection connection = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Compress = True; "))
             {
@@ -190,7 +213,7 @@ namespace SQlite
             try
             {
                 SQLiteCommand sqlite_cmd;
-                string sql = "INSERT INTO Students (Name, 'Surname', 'Middle_Name', 'Date_of_Birth'," +
+                string sql = "INSERT INTO Students (Name, 'Surname', 'Middle_Name', 'Marks'," +
                     "'Group_Name', 'Group_Num', 'Group_Department') " +
                     $"VALUES ('{items[0]}','{items[1]}','{items[2]}','{items[3]}'," +
                     $"'{items[4]}','{items[5]}','{items[6]}')";
@@ -209,7 +232,7 @@ namespace SQlite
             {
                 SQLiteCommand sqlite_cmd;
                 string sql = $"UPDATE Students SET Name = '{items[0]}', 'Surname' = '{items[1]}', " +
-                    $"'Middle_Name' = '{items[2]}', 'Date_of_Birth' = '{items[3]}'," +
+                    $"'Middle_Name' = '{items[2]}', 'Marks' = '{items[3]}'," +
                     $"'Group_Name' = '{items[4]}', 'Group_Num' = '{items[5]}', 'Group_Department' = '{items[6]}' " +
                     $"WHERE ID = '{id}'";
                 sqlite_cmd = conn.CreateCommand();

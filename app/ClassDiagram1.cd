@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SQlite.Extensions">
+    <Position X="2.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQCAAAAAAAAAAAAAAAgEAAEBBA=</HashCode>
+      <FileName>sql.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SQlite.DataBase">
+    <Position X="1" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAagAAAAACBACAEABAAAAAQAAAEAAEAAAYQCAAAAAAA=</HashCode>
+      <FileName>sql.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="app.main">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADQAgFCAkKBQEBiAABjAQIACRAAAgAABAIAAQAEABoA=</HashCode>
+      <FileName>main.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -42,6 +42,7 @@
             this.combobox_delete = new System.Windows.Forms.ComboBox();
             this.delete_group_button = new System.Windows.Forms.Button();
             this.load_data = new System.Windows.Forms.Button();
+            this.load_txt = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.datagrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,9 +77,9 @@
             // 
             // delete_button
             // 
-            this.delete_button.Location = new System.Drawing.Point(886, 432);
+            this.delete_button.Location = new System.Drawing.Point(886, 401);
             this.delete_button.Name = "delete_button";
-            this.delete_button.Size = new System.Drawing.Size(95, 39);
+            this.delete_button.Size = new System.Drawing.Size(95, 26);
             this.delete_button.TabIndex = 3;
             this.delete_button.Text = "Delete Person";
             this.delete_button.UseVisualStyleBackColor = true;
@@ -135,9 +136,9 @@
             // 
             // edit_person
             // 
-            this.edit_person.Location = new System.Drawing.Point(886, 387);
+            this.edit_person.Location = new System.Drawing.Point(886, 372);
             this.edit_person.Name = "edit_person";
-            this.edit_person.Size = new System.Drawing.Size(95, 39);
+            this.edit_person.Size = new System.Drawing.Size(95, 23);
             this.edit_person.TabIndex = 9;
             this.edit_person.Text = "Edit Person";
             this.edit_person.UseVisualStyleBackColor = true;
@@ -176,17 +177,28 @@
             // 
             this.load_data.Location = new System.Drawing.Point(886, 342);
             this.load_data.Name = "load_data";
-            this.load_data.Size = new System.Drawing.Size(95, 39);
+            this.load_data.Size = new System.Drawing.Size(95, 24);
             this.load_data.TabIndex = 13;
             this.load_data.Text = "Load Dataset";
             this.load_data.UseVisualStyleBackColor = true;
             this.load_data.Click += new System.EventHandler(this.load_data_Click);
+            // 
+            // load_txt
+            // 
+            this.load_txt.Location = new System.Drawing.Point(886, 433);
+            this.load_txt.Name = "load_txt";
+            this.load_txt.Size = new System.Drawing.Size(95, 26);
+            this.load_txt.TabIndex = 14;
+            this.load_txt.Text = ".txt data";
+            this.load_txt.UseVisualStyleBackColor = true;
+            this.load_txt.Click += new System.EventHandler(this.load_txt_Click);
             // 
             // main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(993, 483);
+            this.Controls.Add(this.load_txt);
             this.Controls.Add(this.load_data);
             this.Controls.Add(this.delete_group_button);
             this.Controls.Add(this.combobox_delete);
@@ -225,5 +237,6 @@
         private ComboBox combobox_delete;
         private Button delete_group_button;
         private Button load_data;
+        private Button load_txt;
     }
 }
