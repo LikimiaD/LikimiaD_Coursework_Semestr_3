@@ -16,7 +16,7 @@ namespace SQlite
         }
         async public void CreateFile(string filename)
         {
-            if (!(File.Exists(path)))
+            if (!(File.Exists(path + filename)))
                 using (FileStream fstream = new FileStream(path + filename, FileMode.OpenOrCreate))
                 {
                     byte[] buffer = Encoding.Default.GetBytes("");
@@ -57,7 +57,10 @@ namespace SQlite
         }
         public string LoadFile(string filename)
         {
-            return File.ReadAllText(path+ filename);
+            if (File.Exists(path + filename))
+                return File.ReadAllText(path + filename);
+            else
+                return "";
         }
     }
     public partial class DataBase
