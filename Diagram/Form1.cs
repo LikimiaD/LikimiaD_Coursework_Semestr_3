@@ -13,6 +13,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Diagram
 {
+
     public partial class Form1 : Form
     {
         public Form1()
